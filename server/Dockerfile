@@ -8,8 +8,6 @@ RUN npm install
 
 COPY . .
 
-COPY .env .env
-
 EXPOSE 8000
 
 CMD ["npm", "start"]
