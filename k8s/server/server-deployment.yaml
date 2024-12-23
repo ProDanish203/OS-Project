@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: os-project-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: os-project-api
+  template:
+    metadata:
+      labels:
+        app: os-project-api
+    spec:
+      containers:
+      - name: os-project-api
+        image: prodanish203/os-project-api
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: PORT
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: MONGO_URI
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: ACCESS_TOKEN_SECRET
+        - name: ACCESS_TOKEN_EXPIRY
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: ACCESS_TOKEN_EXPIRY
+        - name: REFRESH_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: REFRESH_TOKEN_SECRET
+        - name: REFRESH_TOKEN_EXPIRY
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: REFRESH_TOKEN_EXPIRY
+        - name: EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: EMAIL
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: PASSWORD
+        - name: BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: BUCKET_NAME
+        - name: BUCKET_REGION
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: BUCKET_REGION
+        - name: AWS_BUCKET_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: AWS_BUCKET_ACCESS_KEY_ID
+        - name: AWS_BUCKET_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: AWS_BUCKET_SECRET_ACCESS_KEY
+        - name: CLOUDFRONT_DISTRIBUTION_ID
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: CLOUDFRONT_DISTRIBUTION_ID
+        - name: CLOUDFRONT_URL
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: CLOUDFRONT_URL
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: STRIPE_SECRET_KEY
+        - name: STRIPE_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: STRIPE_WEBHOOK_SECRET
+        - name: CLIENT_URL
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: CLIENT_URL
+        

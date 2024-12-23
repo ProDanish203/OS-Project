@@ -1,0 +1,71 @@
+name: Build And Deploy
+
+on:
+  push:
+    branches: ["dev"]
+  pull_request:
+    branches: ["dev"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js 22.2.0
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22.2.0"
+
+      - name: Install pm2 globally
+        run: npm install -g pm2
+
+      - name: Create Server .env file
+        run: |
+          cd server
+          echo "${{ secrets.SERVER_ENV }}" > .env
+
+      - name: Create Client .env file
+        run: |
+          cd client
+          echo "${{ secrets.CLIENT_ENV }}" > .env
+
+      - name: Create Website .env file
+        run: |
+          cd website
+          echo "${{ secrets.SITE_ENV }}" > .env
+
+      - name: Install Dependencies
+        run: |
+          cd server
+          npm ci
+          cd ../client
+          npm ci
+          cd ../website
+          npm ci
+
+      - name: Build Client
+        run: |
+          cd client
+          npm run build
+
+      - name: Build Website
+        run: |
+          cd website
+          npm run build
+
+      - name: Start Server
+        run: |
+          cd server
+          pm2 restart server || pm2 start npm --name "server" -- start
+
+      - name: Start Client
+        run: |
+          cd client
+          pm2 restart client || pm2 start npm --name "client" -- start
+
+      - name: Start Website
+        run: |
+          cd website
+          pm2 restart website || pm2 start npm --name "website" -- start
