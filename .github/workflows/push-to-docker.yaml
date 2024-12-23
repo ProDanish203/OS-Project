@@ -18,17 +18,7 @@ jobs:
       - name: Build Server Docker image
         run: |
           cd server
-          docker build -t prodanish203/inventory-api .
-
-      - name: Build Client Docker image
-        run: |
-          cd client
-          docker build -t prodanish203/inventory-client .
-
-      - name: Build Website Docker image
-        run: |
-          cd website
-          docker build -t prodanish203/inventory-website .
+          docker build -t prodanish203/os-project-api .
 
       - name: Push to DockerHub
         env:
@@ -37,8 +27,4 @@ jobs:
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           cd server
-          docker push prodanish203/inventory-api
-          cd ../client
-          docker push prodanish203/inventory-client
-          cd ../website
-          docker push prodanish203/inventory-website
+          docker push prodanish203/os-project-api

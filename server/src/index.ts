@@ -14,6 +14,8 @@ import categoryRoute from "./routes/category.route";
 import productRoute from "./routes/product.route";
 import orderRoute from "./routes/order.route";
 import checkoutRoute from "./routes/checkout.route";
+import os from "os";
+
 
 config();
 
@@ -40,9 +42,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Base Route
 app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Inventory Managment System - API",
-  });
+  try {
+    return res.status(200).json({
+      message: `Ecommerce Store - API, from POD: ${os.hostname()}`,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+app.get("/error", (req, res) => {
+  process.exit(1);
 });
 
 // Routes
